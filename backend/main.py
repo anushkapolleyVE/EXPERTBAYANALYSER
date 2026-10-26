@@ -48,6 +48,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.middleware("http")
+async def normalize_slash_middleware(request, call_next):
+    # Automatically collapse duplicate slashes in URL path (e.g. /api//test-cases -> /api/test-cases)
+    path = request.scope.get("path", "")
+    if "//" in path:
+        import re
+        request.scope["path"] = re.sub(r"/+", "/", path)
+    return await call_next(request)
+
+
 @app.get("/api/health")
 def health_check():
     return {

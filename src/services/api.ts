@@ -8,9 +8,11 @@ import {
   INITIAL_RECOMMENDATIONS, INITIAL_AUDIT_LOGS, INITIAL_PILOT_INFO 
 } from '../mockData';
 
-// Dynamic API base URL: Uses VITE_API_BASE_URL if set (production deployment), or Vite dev proxy (/api)
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+// Dynamic API base URL: Strips any trailing slash to prevent double-slash 404s (e.g. /api//test-cases)
+const rawBase = import.meta.env.VITE_API_BASE_URL || '/api';
+const BASE_URL = rawBase.replace(/\/+$/, '');
 const TIMEOUT_MS = 15000; // 15s to allow for serverless PostgreSQL cold-starts
+
 
 // Helper for local storage persistence cache
 function getLocal<T>(key: string, initial: T): T {
