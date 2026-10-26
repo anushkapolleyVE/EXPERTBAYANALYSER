@@ -59,15 +59,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Right: Actions, Notifications, Role Switcher */}
         <div className="flex items-center space-x-3">
           
-          {/* Flowchart Modal Button */}
-          <button
-            onClick={onOpenFlowchart}
-            className="flex items-center space-x-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 transition-colors shadow-sm"
-            title="Inspect 7-Stage Pilot Flowchart Specification"
-          >
-            <GitBranch className="w-4 h-4 text-indigo-600" />
-            <span className="hidden sm:inline">Flowchart Architecture</span>
-          </button>
 
           {/* Critical Issue Indicator */}
           <div className="relative">
