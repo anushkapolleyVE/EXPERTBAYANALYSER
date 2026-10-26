@@ -156,20 +156,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Bottom Source Material Context Card */}
       <div className="p-4 m-3 rounded-2xl bg-slate-800/60 border border-slate-700/60 text-xs">
         <div className="flex items-center justify-between mb-2">
-          <span className="font-semibold text-slate-200">Starting Source Scope</span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-900/60 text-blue-300 font-mono">264 Total</span>
+          <span className="font-semibold text-slate-200">Database Inventory</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-900/60 text-blue-300 font-mono">{totalCasesCount} Total</span>
         </div>
         <p className="text-[11px] text-slate-400 leading-relaxed mb-2.5">
-          180 Engineering Drafts &amp; 84 Product Retrieval Probes prepared as unreviewed starting material.
+          Active test material loaded from PostgreSQL database under evaluation protocol.
         </p>
         <div className="space-y-1 text-[10px] text-slate-400">
           <div className="flex justify-between">
-            <span>• Eng. Draft Questions:</span>
-            <span className="font-semibold text-slate-300">180</span>
-          </div>
-          <div className="flex justify-between">
-            <span>• Product Retrieval Probes:</span>
-            <span className="font-semibold text-slate-300">84</span>
+            <span>• Active Test Cases:</span>
+            <span className="font-semibold text-slate-300">{totalCasesCount}</span>
           </div>
           <div className="flex justify-between text-blue-400 font-medium pt-1 border-t border-slate-700">
             <span>• Multi-Reviewer Mandate:</span>

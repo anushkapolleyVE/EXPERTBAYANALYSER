@@ -52,6 +52,23 @@ export const TestMaterialView: React.FC<TestMaterialViewProps> = ({
     held_out_flag: false
   });
 
+  // Dynamic counts calculated directly from active database testCases
+  const engQuestionsCount = testCases.filter(c => 
+    c.test_category === 'Engineering Draft Question' || 
+    (c.test_category && c.test_category.toLowerCase().includes('engineering'))
+  ).length;
+
+  const retrievalProbesCount = testCases.filter(c => 
+    c.test_category === 'Product Retrieval Smoke Probe' || 
+    (c.test_category && (c.test_category.toLowerCase().includes('retrieval') || c.test_category.toLowerCase().includes('probe')))
+  ).length;
+
+  const naturalLanguageCount = testCases.filter(c => 
+    c.test_category && c.test_category.toLowerCase().includes('natural')
+  ).length;
+
+  const heldOutCount = testCases.filter(c => Boolean(c.held_out_flag)).length;
+
   // Filter test cases
   const filteredCases = testCases.filter((tc) => {
     if (searchTerm) {
@@ -155,7 +172,7 @@ export const TestMaterialView: React.FC<TestMaterialViewProps> = ({
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            Unreviewed starting material inventory: <strong>180 Engineering Drafts</strong> + <strong>84 Retrieval Smoke Probes</strong> = <strong>264 Items</strong>.
+            Database material inventory: <strong>{engQuestionsCount} Engineering Questions</strong> + <strong>{retrievalProbesCount} Retrieval Smoke Probes</strong> = <strong>{testCases.length} Loaded Cases</strong>.
           </p>
         </div>
 
@@ -189,16 +206,16 @@ export const TestMaterialView: React.FC<TestMaterialViewProps> = ({
         <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200/70">
           <p className="text-[10px] font-bold uppercase text-blue-800 tracking-wider">A. Engineering Questions</p>
           <div className="flex items-baseline justify-between mt-1">
-            <span className="text-2xl font-extrabold text-blue-900">180</span>
+            <span className="text-2xl font-extrabold text-blue-900">{engQuestionsCount}</span>
             <span className="text-[11px] text-blue-700 font-medium">Source Bound</span>
           </div>
-          <p className="text-[11px] text-blue-600/90 mt-0.5">Unreviewed starting material</p>
+          <p className="text-[11px] text-blue-600/90 mt-0.5">Live database cases</p>
         </div>
 
         <div className="p-3.5 rounded-xl bg-sky-50/70 border border-sky-200/70">
           <p className="text-[10px] font-bold uppercase text-sky-800 tracking-wider">B. Retrieval Smoke Probes</p>
           <div className="flex items-baseline justify-between mt-1">
-            <span className="text-2xl font-extrabold text-sky-900">84</span>
+            <span className="text-2xl font-extrabold text-sky-900">{retrievalProbesCount}</span>
             <span className="text-[11px] text-sky-700 font-medium">Product Retrieval</span>
           </div>
           <p className="text-[11px] text-sky-600/90 mt-0.5">Indian home-service scope</p>
@@ -207,9 +224,7 @@ export const TestMaterialView: React.FC<TestMaterialViewProps> = ({
         <div className="p-3.5 rounded-xl bg-purple-50/70 border border-purple-200/70">
           <p className="text-[10px] font-bold uppercase text-purple-800 tracking-wider">C. Natural Language Cases</p>
           <div className="flex items-baseline justify-between mt-1">
-            <span className="text-2xl font-extrabold text-purple-900">
-              {testCases.filter(c => c.test_category.includes('Natural')).length || 4}
-            </span>
+            <span className="text-2xl font-extrabold text-purple-900">{naturalLanguageCount}</span>
             <span className="text-[11px] text-purple-700 font-medium">Multi-Lingual</span>
           </div>
           <p className="text-[11px] text-purple-600/90 mt-0.5">Hindi, Tamil, Marathi dialect queries</p>
@@ -218,9 +233,7 @@ export const TestMaterialView: React.FC<TestMaterialViewProps> = ({
         <div className="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/70">
           <p className="text-[10px] font-bold uppercase text-amber-800 tracking-wider">D. Held-Out Evaluation Set</p>
           <div className="flex items-baseline justify-between mt-1">
-            <span className="text-2xl font-extrabold text-amber-900">
-              {testCases.filter(c => c.held_out_flag).length}
-            </span>
+            <span className="text-2xl font-extrabold text-amber-900">{heldOutCount}</span>
             <span className="text-[11px] text-amber-700 font-medium">Leakage Protected</span>
           </div>
           <p className="text-[11px] text-amber-600/90 mt-0.5">Strictly isolated from tuning</p>
