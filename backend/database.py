@@ -9,9 +9,12 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./expertbay_eval.db")
 
-# Normalize postgres:// to postgresql:// (required by SQLAlchemy 1.4+)
+# Normalize postgres:// and postgresql:// to postgresql+psycopg2:// for psycopg2 compatibility
 if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg2://", 1)
+elif DATABASE_URL.startswith("postgresql://") and not DATABASE_URL.startswith("postgresql+"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://", 1)
+
 
 # Configure connection arguments and engine parameters based on DB dialect
 connect_args = {}
