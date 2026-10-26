@@ -8,6 +8,8 @@ import {
   TestCase, Reviewer, Judgment, Disagreement, 
   Finding, Recommendation 
 } from '../types';
+import { api } from '../services/api';
+
 
 interface ReportsViewProps {
   testCases: TestCase[];
@@ -153,7 +155,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
 
         <div className="flex flex-wrap items-center gap-2">
           <a
-            href={activeDeliverable === 'safety_privacy' ? 'http://localhost:8000/api/reports/pdf/safety-privacy' : 'http://localhost:8000/api/reports/pdf/scorecard'}
+            href={`${import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, '') : '/api'}/reports/pdf/${activeDeliverable === 'safety_privacy' ? 'safety-privacy' : 'scorecard'}`}
             download
             target="_blank"
             rel="noreferrer"
@@ -210,23 +212,18 @@ export const ReportsView: React.FC<ReportsViewProps> = ({
         <button
           onClick={async () => {
             try {
-              const res = await fetch('http://localhost:8000/api/pilot/sign-off', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ signed_off_by: 'Lead Compliance Auditor', sign_off_notes: 'All items reviewed' })
+              const res = await api.signOffPilot({
+                signed_off_by: 'Dr. Aryan Sen (Platform Admin)',
+                sign_off_notes: 'Formal audit review completed. Disposition evaluated against safety and privacy gates.'
               });
-              const data = await res.json();
-              if (!res.ok) {
-                alert(`Sign-off Rejected: ${data.detail}`);
-              } else {
-                alert(`Sign-off Approved! Status: ${data.status}`);
-              }
-            } catch (err) {
-              alert('Unable to reach backend sign-off gate. (In offline mode: Blocked by critical findings).');
+              alert(`Sign-off Approved! Status: ${res.status || 'Signed off by authorized lead'}`);
+            } catch (err: any) {
+              alert(err.message || 'Unable to sign off: Blocked by critical findings gate.');
             }
           }}
-          className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm flex items-center space-x-1.5 self-start sm:self-auto"
+          className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm flex items-center space-x-1.5 self-start sm:self-auto cursor-pointer"
         >
+          <ShieldCheck className="w-4 h-4 text-emerald-400" />
           <span>Attempt Pilot Sign-Off</span>
         </button>
       </div>

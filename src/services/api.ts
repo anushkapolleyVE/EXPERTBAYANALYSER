@@ -708,7 +708,23 @@ export const api = {
     return getLocal('audit_logs', INITIAL_AUDIT_LOGS);
   },
 
+  // Pilot Sign-Off
+  signOffPilot: async (payload: { signed_off_by: string; sign_off_notes: string }) => {
+    const res = await fetch(`${BASE_URL}/pilot/sign-off`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(TIMEOUT_MS)
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.detail || `Sign-off rejected (${res.status})`);
+    }
+    return data;
+  },
+
   // Dashboard Analytics
+
   getDashboardAnalytics: async () => {
     try {
       const res = await fetch(`${BASE_URL}/analytics/dashboard`, { 
