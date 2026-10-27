@@ -114,7 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="w-64 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col justify-between border-r border-slate-800 select-none">
+    <aside className="w-72 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col justify-between border-r border-slate-800 select-none overflow-y-auto">
       
       {/* Top Navigation Links */}
       <div className="p-3 space-y-1">
@@ -132,18 +132,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all group ${
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all group text-left ${
                   isActive
                     ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30 font-semibold'
                     : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
                 }`}
               >
-                <div className="flex items-center space-x-3">
-                  <Icon className={`w-4 h-4 transition-colors ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-blue-400'}`} />
-                  <span>{item.label}</span>
+                <div className="flex items-center space-x-2.5 min-w-0 mr-2 text-left">
+                  <Icon className={`w-4 h-4 flex-shrink-0 transition-colors ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-blue-400'}`} />
+                  <span className="whitespace-nowrap text-left">{item.label}</span>
                 </div>
                 {item.badge && (
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${isActive ? 'bg-blue-700/80 text-blue-100 border border-blue-400/30' : item.badgeColor}`}>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium whitespace-nowrap flex-shrink-0 ${isActive ? 'bg-blue-700/80 text-blue-100 border border-blue-400/30' : item.badgeColor}`}>
                     {item.badge}
                   </span>
                 )}
@@ -163,13 +163,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
           Active test material loaded from PostgreSQL database under evaluation protocol.
         </p>
         <div className="space-y-1 text-[10px] text-slate-400">
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <span>• Active Test Cases:</span>
-            <span className="font-semibold text-slate-300">{totalCasesCount}</span>
+            <span className="font-semibold text-slate-300 font-mono">{totalCasesCount}</span>
           </div>
-          <div className="flex justify-between text-blue-400 font-medium pt-1 border-t border-slate-700">
+          <div className="flex items-center justify-between text-blue-400 font-medium pt-1.5 border-t border-slate-700/60">
             <span>• Multi-Reviewer Mandate:</span>
-            <span>2+ Reviewers/Case</span>
+            <span className="font-semibold whitespace-nowrap">2+ Reviewers/Case</span>
           </div>
         </div>
       </div>
